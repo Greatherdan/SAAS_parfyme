@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <link rel="stylesheet" href="/static/styles.css"> <!-- Adjust the path to your CSS file -->
+    <script src="static/questions.js"></script>
+</head>
+<body>
+    <div id="chat-container">
+        <div id="question-container" class="smoke-animation"></div>
+        <div id="answer-container">
+            <form onsubmit="event.preventDefault(); processUserResponses();">
+                <input
+                    type="text"
+                    id="user-answer"
+                    placeholder="Type your response..."
+                    oninput="enableSendButton(this)"
+                >
+                <button type="submit" id="send-button" disabled>➤</button>
+            </form>
+        </div>
+        <div id="response-container"></div> <!-- Container to display GPT-3 response and perfume recommendations -->
+    </div>
+
+    <script>
+        let typingAnimation;
+        let currentQuestionIndex = 0;
+        const userResponses = [];
+
+        function enableSendButton(inputField) {
+            const sendButton = document.getElementById("send-button");
+            sendButton.disabled = inputField.value.trim() === '';
+        }
+
+        function displayQuestion() {
+            const questionContainer = document.getElementById("question-container");
+            const currentQuestion = questions[currentQuestionIndex];
+            let i = 0;
+
+            function typeWriter() {
+                if (i < currentQuestion.length) {
+                    questionContainer.innerHTML += currentQuestion.charAt(i);
+                    i++;
+                }
+            }
+
+            typingAnimation = setInterval(typeWriter, 30);
+        }
+
+        function processUserResponses() {
+            const userAnswer = document.getElementById("user-answer").value;
+            userResponses.push(userAnswer);
+
+            document.getElementById("user-answer").value = ''; // Clear the user's input
+
+            currentQuestionIndex++;
+
+            const sendButton = document.getElementById("send-button");
+            sendButton.disabled = true; // Disable the Send button until the next question is displayed
+
+            if (currentQuestionIndex < questions.length) {
+                displayQuestion();
+            } else {
+                // All questions have been answered
+                alert("Thank you for answering the questions!");
+                // Now you can do something with the user's responses (e.g., save to a database)
+                console.log("User Responses:", userResponses);
+                displayResponse(); // Show the GPT-3 response and perfume recommendations
+            }
+        }
+
+        // Enable the Send button when the user starts typing a response
+        document.getElementById("user-answer").addEventListener("input", function () {
+            enableSendButton(this);
+        });
+
+        function displayResponse() {
+            const responseContainer = document.getElementById("response-container");
+            responseContainer.innerHTML = "Display GPT-3 response and perfume recommendations here"; // Replace this with your logic
+            responseContainer.style.display = "block"; // Show the response container
+        }
+
+        // Call displayQuestion() when the page loads
+        window.onload = displayQuestion;
+    </script>
+    <script>
+        // Add this script after the existing script
+        document.getElementById("user-answer").addEventListener("keydown", function (event) {
+            if (event.key === 'Enter' && !document.getElementById("send-button").disabled) {
+                event.preventDefault();
+                clearInterval(typingAnimation);
+                processUserResponses();
+            }
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,72 @@
+/* static/styles.css */
+
+body {
+  background-color: #000;
+  color: #fff;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+#chat-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center; /* Center text within chat container */
+}
+
+#question-container {
+  margin-bottom: 10px;
+  font-size: 18px;
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 2px solid #00CED1;
+  animation: typing 3s steps(30) forwards, smoke 3s infinite;
+}
+
+#answer-container {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+
+#user-answer {
+  flex: 1;
+  padding: 8px;
+  border: none;
+  border-bottom: 2px solid #00CED1;
+  background-color: transparent;
+  color: #fff;
+  outline: none;
+  font-size: 16px;
+  margin-right: 10px;
+}
+
+#send-button {
+  padding: 8px;
+  border: none;
+  background-color: #00CED1;
+  color: #fff;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+#response-container {
+  margin-top: 20px;
+  font-size: 18px;
+  display: none; /* Initially hide the response container */
+}
+
+@keyframes typing {
+  from {
+      width: 0;
+  }
+  to {
+      width: 100%;
+  }
+}
+
+
